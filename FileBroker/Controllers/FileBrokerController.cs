@@ -7,18 +7,19 @@ namespace FileBroker.Controllers
     [Route("api/files")]
     public class FileController : Controller
     {
+        private const string ExchangeName = "files";
+        private const string HostName = "localhost";
+
         [HttpPost]
         public void Post([FromBody]string message)
         {
             var body = Encoding.UTF8.GetBytes(message);
-            var factory = new ConnectionFactory() { HostName = "localhost" };
+            var factory = new ConnectionFactory() { HostName = HostName };
             using (var connection = factory.CreateConnection())
+            using (var channel = connection.CreateModel())
             {
-                using (var channel = connection.CreateModel())
-                {
-                    channel.ExchangeDeclare("files", "fanout");
-                    channel.BasicPublish(exchange: "files", routingKey: "", basicProperties: null, body: body);
-                }
+                channel.ExchangeDeclare(ExchangeName, "fanout");
+                channel.BasicPublish(exchange: ExchangeName, routingKey: "", basicProperties: null, body: body);
             }
         }
     }
