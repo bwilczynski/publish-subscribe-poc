@@ -8,7 +8,7 @@ namespace FileBroker.Controllers
     public class FileController : Controller
     {
         private const string ExchangeName = "files";
-        private const string HostName = "localhost";
+        private const string HostName = "rabbitmq";
 
         [HttpPost]
         public void Post([FromBody]string message)
