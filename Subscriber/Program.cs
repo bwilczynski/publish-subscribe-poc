@@ -11,6 +11,8 @@ namespace Subscriber
         private const string ExchangeName = "messages";
         private const string HostName = "rabbitmq";
 
+        private const string QueueName = "consumer_queue";
+
         private static readonly AutoResetEvent _closing = new AutoResetEvent(false);
 
         static void Main(string[] args)
@@ -21,7 +23,7 @@ namespace Subscriber
             {
                 channel.ExchangeDeclare(exchange: ExchangeName, type: "fanout");
 
-                var queueName = channel.QueueDeclare().QueueName;
+                var queueName = channel.QueueDeclare(queue: QueueName, durable: true, exclusive: false, autoDelete: false).QueueName;
                 channel.QueueBind(queue: queueName,
                                 exchange: ExchangeName,
                                 routingKey: "");
@@ -34,10 +36,10 @@ namespace Subscriber
                     var body = ea.Body;
                     var message = Encoding.UTF8.GetString(body);
                     Console.WriteLine(" [x] {0}", message);
+
+                    channel.BasicAck(ea.DeliveryTag, false);
                 };
-                channel.BasicConsume(queue: queueName,
-                                    noAck: true,
-                                    consumer: consumer);
+                channel.BasicConsume(queue: queueName, noAck: false, consumer: consumer);
 
                 Console.WriteLine(" Press [CTRL-C] to exit.");
                 Console.CancelKeyPress += (sender, e) => _closing.Set();

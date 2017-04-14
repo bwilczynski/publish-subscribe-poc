@@ -18,8 +18,11 @@ namespace Publisher.Controllers
             using (var connection = factory.CreateConnection())
             using (var channel = connection.CreateModel())
             {
+                var properties = channel.CreateBasicProperties();
+                properties.Persistent = true;
+
                 channel.ExchangeDeclare(ExchangeName, "fanout");
-                channel.BasicPublish(exchange: ExchangeName, routingKey: "", basicProperties: null, body: body);
+                channel.BasicPublish(exchange: ExchangeName, routingKey: "", basicProperties: properties, body: body);
             }
         }
     }
