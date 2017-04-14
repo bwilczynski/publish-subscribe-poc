@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text;
+using System.Threading;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 
@@ -7,8 +8,10 @@ namespace Subscriber
 {
     class Program
     {
-        private const string ExchangeName = "files";
-        private const string HostName = "localhost";
+        private const string ExchangeName = "messages";
+        private const string HostName = "rabbitmq";
+
+        private static readonly AutoResetEvent _closing = new AutoResetEvent(false);
 
         static void Main(string[] args)
         {
@@ -36,8 +39,9 @@ namespace Subscriber
                                     noAck: true,
                                     consumer: consumer);
 
-                Console.WriteLine(" Press [enter] to exit.");
-                Console.ReadLine();
+                Console.WriteLine(" Press [CTRL-C] to exit.");
+                Console.CancelKeyPress += (sender, e) => _closing.Set();
+                _closing.WaitOne();
             }
         }
     }

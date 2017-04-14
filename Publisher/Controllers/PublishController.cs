@@ -7,7 +7,7 @@ namespace Publisher.Controllers
     [Route("api/publish")]
     public class PublishController : Controller
     {
-        private const string ExchangeName = "files";
+        private const string ExchangeName = "messages";
         private const string HostName = "rabbitmq";
 
         [HttpPost]

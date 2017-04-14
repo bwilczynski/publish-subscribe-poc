@@ -8,6 +8,11 @@ services:
     depends_on:
       - rabbitmq
 
+  subscriber:
+    build: ./Subscriber
+    depends_on:
+      - rabbitmq
+      
   rabbitmq:
     image: rabbitmq:3-management
     hostname: rabbitmq
