@@ -2,10 +2,10 @@
 using Microsoft.AspNetCore.Mvc;
 using RabbitMQ.Client;
 
-namespace FileBroker.Controllers
+namespace Publisher.Controllers
 {
-    [Route("api/files")]
-    public class FileController : Controller
+    [Route("api/publish")]
+    public class PublishController : Controller
     {
         private const string ExchangeName = "files";
         private const string HostName = "rabbitmq";

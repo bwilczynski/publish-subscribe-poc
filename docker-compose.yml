@@ -1,8 +1,8 @@
 version: "3"
 
 services:
-  filebroker:
-    build: ./FileBroker
+  publisher:
+    build: ./Publisher
     ports:
       - "5000:5000"
     depends_on:

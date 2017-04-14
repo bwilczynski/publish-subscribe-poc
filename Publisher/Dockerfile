@@ -4,10 +4,10 @@ RUN mkdir /app
 WORKDIR /app
 
 # copy csproj and restore as distinct layers
-COPY FileBroker.csproj .
+COPY Publisher.csproj .
 RUN dotnet restore
 
 # copy and build everything else
 COPY . .
 RUN dotnet publish -c Release -o out
-ENTRYPOINT ["dotnet", "out/FileBroker.dll"]
+ENTRYPOINT ["dotnet", "out/Publisher.dll"]
