@@ -30,3 +30,7 @@ $ curl -iX POST -d '"hello world"' -H "Content-Type: application/json" localhost
 ```
 
 Try putting subscriber offline (by pressing CTRL-C), run again after sending more messages and observe that all messages are delivered.
+
+## Why
+
+Deliver messages to multiple consumers that might be living in different processes. Basis for the implementation of architectural patterns such as CQRS, Event Sourcing.
